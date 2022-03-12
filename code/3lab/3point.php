@@ -24,43 +24,28 @@
     <h1> Ads </h1>
     <br>
     <?php
-        $buy = scandir("categories/buy");
-        $job = scandir("categories/job");
-        $missing = scandir("categories/missing");
-        $sale = scandir("categories/sale");
-        echo "<table border=1><caption>Buy</caption>";
-        foreach($buy as $ad){
-            if ($ad != "." && $ad != ".."){
-            $readAd = file_get_contents("categories/buy/$ad");
-            echo "<tr><td>$readAd</td></tr>";
+        $categories = scandir(__DIR__."/categories");
+        $ads = [];
+        foreach($categories as $category){
+            if ($category != "." && $category != ".."){
+                $ads[$category] = scandir("categories/$category");
+            }
+        };
+        echo "<table border=1><caption>Ads</caption>";
+        foreach($ads as $category => $arr){
+
+            echo "<tr><th colspan=3 align=center>" . ucfirst($category) . "</th></tr>";
+            foreach($arr as $ad){
+                if ($ad != "." && $ad != ".."){
+                    $file = fopen("categories/$category/$ad", "r");
+                    $email = fgets($file);
+                    $header = fgets($file);
+                    $adText = fgets($file);
+                    echo "<tr><td>$email</td><td>$header</td><td>$adText</td></tr>";
+                }
             }
         }
-        echo "</table><br>";
-        echo "<table border=1><caption>Job</caption>";
-        foreach($job as $ad){
-            if ($ad != "." && $ad != ".."){
-            $readAd = file_get_contents("categories/job/$ad");
-            echo "<tr><td>$readAd</td></tr>";
-            }
-        }
-        echo "</table><br>";
-        echo "<table border=1><caption>Missing</caption>";
-        foreach($missing as $ad){
-            if ($ad != "." && $ad != ".."){
-            $readAd = file_get_contents("categories/missing/$ad");
-            echo "<tr><td>$readAd</td></tr>";
-            }
-        }
-        echo "</table><br>";
-        echo "<table border=1><caption>Sale</caption>";
-        foreach($sale as $ad){
-            if ($ad != "." && $ad != ".."){
-            $readAd = file_get_contents("categories/sale/$ad");
-            echo "<tr><td>$readAd</td></tr>";
-            }
-        }
-        echo "</table><br>";
+        echo "</table>";
     ?>
 </body>
-
 </html>

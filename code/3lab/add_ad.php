@@ -6,7 +6,7 @@ if($_GET["email"] != "" && $_GET["category"] != "Choose category" && $_GET["head
     $category = $_GET["category"];
     $text = $_GET["text"];
     $adFile = fopen("categories/$category/$header.txt" , "w");
-    $adText = "Added by $email \n $header \n $text";
+    $adText = "$email\n$header\n$text";
     fwrite($adFile, $adText);
     fclose($adFile);
 }
