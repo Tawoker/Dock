@@ -1,11 +1,23 @@
 <?php
-    
+    require "../vendor/autoload.php";
+    $client = new Google_Client();
+    $client->setApplicationName('Google Sheets API PHP Quickstart');
+    $client->setScopes(Google_Service_Sheets::SPREADSHEETS_READONLY);
+    $client->setAuthConfig('../credentials.json');
+    $client->setAccessType('offline');
+    $client->setPrompt('select_account consent');
+    $service = new Google_Service_Sheets($client);
+    $spreadsheetId = '13ixJlPRuhkFhySTPfW5Suu65t5iHVZYfPrTC0-y42uE';
+    $range = 'AdData!A1:D';
+    $response = $service->spreadsheets_values->get($spreadsheetId, $range);
+    $values = $response->getValues();
+    var_dump($values);
 ?>
 <html>
 
 <body>
     <h1> Send ad </h1>
-    <form action="add_ad.php" method="GET">
+    <form action="/3lab/save_ad.php" method="GET">
         <p>Email: <input type="email" name="email"></p>
         <select name="category">
             <option selected>Choose category</option>
@@ -47,5 +59,17 @@
         }
         echo "</table>";
     ?>
+    <h1>Ads from GoogleSheets</h1>
+    <table border=1>
+    <tr><th>Category</th><th>Email</th><th>Header</th><th>Text</th></tr>
+    <?php
+    foreach($values as $adData){
+        echo "<tr>" . "<td>" . ucfirst($adData[0]) . "</td>";
+        echo "<td>" . $adData[1] . "</td>";
+        echo "<td>" . $adData[2] . "</td>";
+        echo "<td>" . $adData[3] . "</td>" . "</tr>";
+    }
+    ?>
+    </table>
 </body>
 </html>
