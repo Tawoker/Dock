@@ -1,0 +1,12 @@
+{
+    "name": "jhosh/code",
+    "authors": [
+        {
+            "name": "Tawoker",
+            "email": "jhoshkyrbee1@gmail.com"
+        }
+    ],
+    "require": {
+        "google/apiclient": "2.0"
+    }
+}
